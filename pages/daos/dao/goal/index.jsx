@@ -151,7 +151,7 @@ export default function Goal() {
             <NavLink href="?q=This Month">
               <a className="DonationBarLink tab block px-3 py-2">This Month</a>
             </NavLink>
-            {(GoalURI.wallet.toLowerCase() !== window.ethereum.selectedAddress?.toLowerCase())?(<> 
+            {(GoalURI.wallet.toLowerCase() !== window.accountId?.toLowerCase())?(<> 
             <NavLink href={`/CreateIdeas?[${goalId}]`}>
               <Button style={{ width: '135px', position: 'absolute', right: '1rem' }} iconLeft>
                 <ControlsPlus className="text-moon-24" />

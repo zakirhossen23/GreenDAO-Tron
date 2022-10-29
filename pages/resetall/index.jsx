@@ -8,7 +8,7 @@ export default function ResetDataFORM() {
 
   async function resetData() {
     await window.contract.reset_all().send({
-      from:window.ethereum.selectedAddress,
+      from:window.accountId,
       gasPrice: 500000000000,
       gas: 5_000_000,
     });

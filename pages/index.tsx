@@ -11,29 +11,19 @@ import logo from "/public/Logo.svg";
 declare let window: any;
 export default function Welcome() {
   const router = useRouter();
-  function donateCLICK() {
-    if (typeof window.ethereum === "undefined") {
+  function letstartCLICK() {
+    if (typeof window.tronLink=== "undefined") {
       window.open(
-        "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
+        "https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec",
         "_blank"
       );
-    } else  if (window.ethereum.selectedAddress == null || window.localStorage.getItem("ConnectedMetaMask") !== "true") {
+    } else  if (window.accountId == null || window.localStorage.getItem("ConnectedTronLink") !== "true") {
       router.push("/login?[/daos]");
     } else {
       router.push("/daos");
     }
   }
 
-  function CreateProjectsCLICK() {
-    if (typeof window.ethereum === "undefined") {
-      window.open(
-        "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
-        "_blank"
-      );
-    } else {
-      router.push("/daos");
-    }
-  }
   return (
     <>
       <Head>
@@ -59,7 +49,7 @@ export default function Welcome() {
             benefitting the whole community. GreenDAO gives everybody a vote and a voice.
           </p>
           <div className="pt-4">
-            <Button onClick={donateCLICK}>Let’s make decisions</Button>
+            <Button onClick={letstartCLICK}>Let’s make decisions</Button>
           </div>
         </div>
         <div className={styles.image}>
@@ -84,7 +74,7 @@ export default function Welcome() {
             benefitting the whole community. GreenDAO gives everybody a vote and a voice.
           </p>
           <div className="pt-4">
-            <Button onClick={CreateProjectsCLICK}>Let’s make decisions</Button>
+            <Button onClick={letstartCLICK}>Let’s make decisions</Button>
           </div>
         </div>
       </div>

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract CoinExERC721 is ERC721 {
+contract GreenDAO {
     struct dao_uri_struct {
         string dao_wallet;
         string dao_uri;
@@ -34,11 +33,7 @@ contract CoinExERC721 is ERC721 {
     mapping(uint256 => ideas_uri_struct) public _ideas_uris;                    //_ideas_ids        => (Ideas)  Goal ID + Ideas URI
     mapping(uint256 => goal_ideas_votes_struct) public all_goal_ideas_votes;    //_ideas_vote_ids   => (Vote)   Goal ID + Ideas ID + Wallet
 
-    address public owner;
-
-    constructor(string memory name, string memory symbol)
-        ERC721(name, symbol)
-    {}
+    
 
     //Daos
     function create_dao(string memory _dao_wallet, string memory _dao_uri)

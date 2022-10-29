@@ -29,7 +29,7 @@ export default function Login() {
 
   const fetchDataStatus = async () => {
     if (
-      window.ethereum.selectedAddress != null && window.localStorage.getItem("ConnectedMetaMask") == "true"
+       window.localStorage.getItem("login-type") == "TronLink"
     ) {
       setConnectStatus(true);
     } else {
@@ -39,7 +39,7 @@ export default function Login() {
   useEffect(() => {
     if (!isServer()) {
       setInterval(() => {
-        if (window.ethereum.selectedAddress != null && window.localStorage.getItem("ConnectedMetaMask") == "true") {
+        if ( window.localStorage.getItem("login-type") == "TronLink") {
           window.location.href = redirecting;
         }
         fetchDataStatus();
@@ -49,8 +49,8 @@ export default function Login() {
   if (isServer()) return null;
 
 
-  function MetamaskWallet() {
-    if (window.ethereum.selectedAddress == null || window.localStorage.getItem("ConnectedMetaMask") !== "true") {
+  function TronLinkWallet() {
+    if (typeof window.tronLink === "undefined") {
       return (
         <>
           <div className="flex gap-6 flex w-full items-center">
@@ -58,10 +58,31 @@ export default function Login() {
               style={{ height: 80, width: 80, border: "1px solid #EBEBEB" }}
               className="p-4 rounded-xl"
             >
-                <img src="https://docs.coinex.org/images/favicon.ico?t=20200703" />
+                <img src="https://www.tronlink.org/favicon.ico" />
             </div>
             <div className="flex flex-1 flex-col">
-            <span className="font-bold">Metamask wallet</span>
+            <span className="font-bold">TronLink Nile wallet</span>
+           
+            </div>
+            <Button onClick={onClickConnect} style={{ width: 148 }}>
+              Install TronLink
+            </Button>
+          </div>
+        </>
+      );
+    }
+    if (window.localStorage.getItem("login-type") !== "TronLink") {
+      return (
+        <>
+          <div className="flex gap-6 flex w-full items-center">
+            <div
+              style={{ height: 80, width: 80, border: "1px solid #EBEBEB" }}
+              className="p-4 rounded-xl"
+            >
+                <img src="https://www.tronlink.org/favicon.ico" />
+            </div>
+            <div className="flex flex-1 flex-col">
+            <span className="font-bold">TronLink Nile wallet</span>
               <span
                 className="flex items-center gap-1"
                 style={{ color: "#FF4E64" }}
@@ -80,7 +101,7 @@ export default function Login() {
         </>
       );
     }
-    if (window.ethereum.selectedAddress != null && window.localStorage.getItem("ConnectedMetaMask") == "true") {
+    if ( window.localStorage.getItem("login-type") == "TronLink") {
       return (
         <>
           <div className="flex gap-6 flex-1 w-full items-center">
@@ -91,7 +112,7 @@ export default function Login() {
               <img src="https://docs.coinex.org/images/favicon.ico?t=20200703" />
             </div>
             <div className="flex flex-1 flex-col">
-              <span className="font-bold">Metamask wallet</span>
+              <span className="font-bold">TronLink Nile wallet</span>
               <span
                 className="flex items-center gap-1"
                 style={{ color: "#40A69F" }}
@@ -116,45 +137,21 @@ export default function Login() {
     }
   }
   async function onClickConnect() {
-    let result = await window.ethereum.request({ method: 'eth_requestAccounts' });
+     if (typeof window.tronLink === "undefined") {
+      window.open(
+        "https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec",
+        "_blank"
+      );
+      return;
+     }
+    let result = await window.tronWeb.request({ method: 'tron_requestAccounts' });
     result;
-    try {
-      const getacc = await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x35', }], //53
-      });
-      getacc;
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: '0x35', //53
-                chainName: 'csc-testnet',
-                nativeCurrency: {
-                  name: 'tCET',
-                  symbol: 'tCET',
-                  decimals: 18,
-                },
-                rpcUrls: ['https://testnet-rpc.coinex.net'],
-              },
-            ],
-          });
-        } catch (addError) {
-          // handle "add" error
-          console.log(addError);
-        }
-      }
-      // handle other "switch" errors
-    }
-    window.localStorage.setItem('ConnectedMetaMask', 'true')
+    window.localStorage.setItem('loggedin', 'true')
+    window.localStorage.setItem('login-type', "TronLink");
   }
   async function onClickDisConnect() {
-    window.localStorage.setItem("ConnectedMetaMask", "");
-    window.localStorage.setItem("Type", "");
+    window.localStorage.setItem('loggedin', 'false')
+    window.localStorage.setItem('login-type', "");
   }
 
   
@@ -170,11 +167,11 @@ export default function Login() {
       <div className={`${styles.container} flex items-center flex-col gap-8`}>
         <div className={`${styles.title} gap-8 flex flex-col`}>
           <h1 className="text-moon-32 font-bold">Login to your account</h1>
-          <p className="text-trunks">Please connect to Metamask wallet in order to login.</p>
+          <p className="text-trunks">Please connect to TronLink Nile wallet in order to login.</p>
         </div>
         <div className={styles.divider}></div>
         <div className={`${styles.title} flex flex-col items-center gap-8`}>
-          <MetamaskWallet />
+          <TronLinkWallet />
         </div>
 
       </div>

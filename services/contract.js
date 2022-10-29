@@ -1,30 +1,43 @@
-import { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import TronWeb from 'tronweb';
+import isServer from "../components/isServer";
 
-import ERC721Singleton from './ERC721Singleton';
+let iscalled = false;
+const fetchInfo = async () => {
+  if (typeof window !== "undefined") {
+    if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+      if (await window.localStorage.getItem('login-type') !== "TronLink") {
+        const fullNode = 'https://api.nileex.io';
+        const solidityNode = 'https://api.nileex.io';
+        const eventServer = 'https://event.nileex.io';
+        const privateKey = '1468f14005ff479c5f2ccde243ad3b85b26ff40d5a4f78f4c43c81a1b3f13a03';
+        const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
+        window.accountId = tronWeb.address.fromPrivateKey("1468f14005ff479c5f2ccde243ad3b85b26ff40d5a4f78f4c43c81a1b3f13a03");
+        window.contract = await tronWeb.contract().at('TX4zPPLU1yViNdrLkZjafnnFXkH5v5r2wp');
+        iscalled = false;
+      } else if (await window.localStorage.getItem('loggedin') === "true") {
+     
+        window.contract = await window.tronWeb.contract().at('TX4zPPLU1yViNdrLkZjafnnFXkH5v5r2wp');
+        window.accountId = window.tronWeb.defaultAddress.base58;
+        window.account = await window.tronWeb.trx.getAccount(accountId);
+        iscalled = false;
 
-// Initializing contract
-async function initContract() {
-  try {
-    const fetchData = async () => {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        window.accountId = window.ethereum.selectedAddress;
-        window.contract = await ERC721Singleton(signer);
-      } catch (error) {
-        console.error(error);
       }
-    };  
-    fetchData();
-  } catch (error) {
-    console.error(error)
+    }
+
   }
- 
+  iscalled = false;
 }
 
-if (typeof window !== "undefined") {
-  if (window?.ethereum !== "undefined")
-  window.InitPromise = initContract()  
-}
-// export default null;
+setInterval(function () {
+  if (typeof window !== "undefined") {
+    if (iscalled === false || typeof window.accountId === "undefined") {
+      iscalled = true;
+      fetchInfo();
+    }
+  }
+}, 100);
+
+/*
+It 
+
+*/

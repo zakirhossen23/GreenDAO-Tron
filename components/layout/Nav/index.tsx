@@ -2,37 +2,33 @@ import React, { useState, useEffect } from "react";
 import NavLink from "next/link";
 import { Button } from "@heathmont/moon-core-tw";
 import { SoftwareLogOut } from "@heathmont/moon-icons-tw";
-import "../../../services/contract";
+import isServer from "../../../components/isServer";
 
 declare let window: any;
-
+let running = false;
 export function Nav(): JSX.Element {
   const [acc, setAcc] = useState('');
-  const [accfull, setAccFull] = useState('');
   const [Balance, setBalance] = useState("");
 
   const [isSigned, setSigned] = useState(false);
   async function fetchInfo() {
-    if (window.ethereum == null) {
+    if (window.tronLink== undefined) {
       window.document.getElementById("withoutSign").style.display = "none";
       window.document.getElementById("withSign").style.display = "none";
-      window.document.getElementById("installMetaMask").style.display = "";
+      window.document.getElementById("installTronLink").style.display = "";
       return;
     }
-    if (window.ethereum.selectedAddress != null && window.localStorage.getItem("ConnectedMetaMask") == "true") {
-      const Web3 = require("web3")
-      const web3 = new Web3(window.ethereum)
-      let Balance = await web3.eth.getBalance(window.ethereum.selectedAddress);
+    if (window.localStorage.getItem("login-type") === "TronLink") {
+  
+      let Balance = await window.tronWeb.trx.getBalance(window.accountId);
 
       let subbing = 10;
 
       if (window.innerWidth > 500) {
         subbing = 20;
       }
-      setAccFull(window.ethereum.selectedAddress);
-      setAcc(window.ethereum.selectedAddress.toString().substring(0, subbing) + "...");
-
-      setBalance(Balance / 1000000000000000000 + " tCET");
+      setAcc(window.accountId.toString().substring(0, subbing) + "...");
+      setBalance(Balance / 1000000 + " TRX");
       if (!isSigned)
         setSigned(true);
 
@@ -49,9 +45,20 @@ export function Nav(): JSX.Element {
   });
 
 
+  setInterval(()=>{ if (!isServer()) {
+    if (!running) {
+      if ( !isSigned || acc === ""){
+        running = true;
+        fetchInfo();   
+      }
+
+    }}
+    },1000)
+ 
+
   async function onClickDisConnect() {
-    window.localStorage.setItem("ConnectedMetaMask", "");
-    window.localStorage.setItem("Type", "");
+    window.localStorage.setItem("loggedin", "");
+    window.localStorage.setItem('login-type', "");
     window.location.href = "/";
   }
 
@@ -61,7 +68,7 @@ export function Nav(): JSX.Element {
         {isSigned ? (<>
 
           <li>
-            <NavLink href="/daos" id="gransbtnNav">
+            <NavLink href="/daos">
               <a>
                 <Button style={{ background: "none" }}> DAO</Button>
               </a>
@@ -85,12 +92,12 @@ export function Nav(): JSX.Element {
             </NavLink>
           </div>
           <div
-            id="installMetaMask"
+            id="installTronLink"
             style={{ display: "none" }}
             className="wallets"
           >
             <div className="wallet">
-              <Button variant="tertiary" onClick={() => { window.open("https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn", "_blank") }}> Metamask</Button>
+              <Button variant="tertiary" onClick={() => { window.open("https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec", "_blank") }}> TronLink</Button>
             </div>
           </div>
 
