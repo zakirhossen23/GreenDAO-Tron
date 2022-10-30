@@ -10,13 +10,28 @@ import Card from "../../components/components/Card/Card";
 import { ControlsChevronRight } from "@heathmont/moon-icons-tw";
 import { Button } from "@heathmont/moon-core-tw";
 
+let running=false;
 export default function DAOs() {
   //Variables
   const [list, setList] = useState([]);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     fetchContractData();
   });
+  
+
+  setInterval(() => {
+    if (!isServer()) {
+      if (typeof window.contract !== "undefined") {
+        running = true;
+        fetchContractData();
+      }
+    }
+    setCount(count + 1);
+  }, 1000);
+
+
   setInterval(function () {
     calculateTimeLeft();
   }, 1000);
@@ -34,11 +49,6 @@ export default function DAOs() {
       }
     } catch (error) {}
   }
-
-  const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
 
   async function fetchContractData() {
     //Fetching data from Smart contract
@@ -69,6 +79,7 @@ export default function DAOs() {
     } catch (error) {
       console.error(error);
     }
+    running = false;
   }
   
 
@@ -149,12 +160,12 @@ export default function DAOs() {
                 </div>
                 <div className="flex align-center flex justify-end align-center">
                  
-                  <NavLink href={`/daos/dao?[${listItem.daoId}]`}>
+                  <a href={`/daos/dao?[${listItem.daoId}]`}>
                     <Button iconleft>
                       <ControlsChevronRight />
                       Go to Dao
                     </Button>
-                  </NavLink>
+                  </a>
                 </div>
               </div>
             </Card>

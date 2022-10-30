@@ -15,7 +15,7 @@ export default function Goal() {
   const [list, setList] = useState([]);
   const [GoalURI, setGoalURI] = useState({   goalId:"",Title:"",Description: "",Budget: "",End_Date:"",StructureLeft: [],StructureRight: [],wallet:"",logo: "" });
   const [goalId, setGoalID] = useState(-1);
-
+  const [count, setCount] = useState(0);
 
   const regex = /\[(.*)\]/g;
   let m;
@@ -28,8 +28,8 @@ export default function Goal() {
   });
   setInterval(function () {
     calculateTimeLeft();
+    setCount(count + 1);
   }, 1000);
-
   if (isServer()) return null;
   const str = decodeURIComponent(window.location.search);
 
@@ -152,7 +152,7 @@ export default function Goal() {
               <a className="DonationBarLink tab block px-3 py-2">This Month</a>
             </NavLink>
             {(GoalURI.wallet.toLowerCase() !== window.accountId?.toLowerCase())?(<> 
-            <NavLink href={`/CreateIdeas?[${goalId}]`}>
+            <a href={`/CreateIdeas?[${goalId}]`}>
               <Button style={{ width: '135px', position: 'absolute', right: '1rem' }} iconLeft>
                 <ControlsPlus className="text-moon-24" />
                 <div className="card BidcontainerCard">
@@ -161,7 +161,7 @@ export default function Goal() {
                   </div>
                 </div>
               </Button>
-              </NavLink></>):(<></>)}
+              </a></>):(<></>)}
           </div>
 
         </div>
@@ -190,12 +190,12 @@ export default function Goal() {
                     {LeftDate(GoalURI.End_Date, listItem.status)} left
                   </div>
                   
-                  <NavLink href={`/daos/dao/goal/ideas?[${listItem.ideasId}]`}>
+                  <a href={`/daos/dao/goal/ideas?[${listItem.ideasId}]`}>
                     <Button iconleft>
                       <ControlsChevronRight />
                       Go to Ideas
                     </Button>
-                  </NavLink>
+                  </a>
                 </div>
               </div>
             </Card>

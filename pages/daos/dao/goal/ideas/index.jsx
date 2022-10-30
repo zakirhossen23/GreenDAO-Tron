@@ -9,7 +9,7 @@ import { Header } from "../../../../../components/layout/Header";
 import styles from "../../../daos.module.css";
 let IdeasEnd = "";
 let IdeasWaiting = false;
-
+let running = false;
 export default function GrantIdeas() {
   //variables
   const [eventId, setIdeasId] = useState(-1);
@@ -17,7 +17,7 @@ export default function GrantIdeas() {
   const [IdeasURI, setIdeasURI] = useState({ ideasId: "", Title: "", Description: "", wallet: "", logo: "", End_Date: "", voted: 0, isVoted: true, allfiles: [] });
 
   const [AccountAddress, setAccountAddress] = useState("");
-
+  const [count, setCount] = useState(0);
   const formatter = new Intl.NumberFormat("en-US", {
     //Converting number into comma version
 
@@ -84,11 +84,17 @@ export default function GrantIdeas() {
     }
   }
   useEffect(() => {
-    if (!isServer()) {    
+    if (!isServer()) {   
+      if (!running && IdeasURI.ideasId === "") {
+        running = false;
         fetchContractData();
+      }
     }
   });
-
+  setInterval(function () {
+    if (IdeasURI.ideasId === "")
+    setCount(count + 1);
+  }, 1000);
   useEffect(() => {
     DesignSlide();
   });
@@ -148,6 +154,7 @@ export default function GrantIdeas() {
     } catch (error) {
       console.error(error);
     }
+    running = false;
   }
 
   async function DesignSlide() {
@@ -186,9 +193,8 @@ export default function GrantIdeas() {
 
   async function VoteIdees() {
     await window.contract.create_goal_ideas_vote(Number(Goalid), Number(id), window.accountId).send({
-      from: window.accountId,
-      gasPrice: 500000000000,
-      gas: 5_000_000,
+      feeLimit:1_000_000_000,
+      shouldPollResponse:true
     });
     window.location.reload();
   }

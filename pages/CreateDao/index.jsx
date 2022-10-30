@@ -4,6 +4,7 @@ import UseFormInput from "../../components/components/UseFormInput";
 import UseFormTextArea from "../../components/components/UseFormTextArea";
 import { Header } from "../../components/layout/Header";
 import NavLink from "next/link";
+import { useRouter } from "next/router";
 import isServer from "../../components/isServer";
 import { NFTStorage, File } from "nft.storage";
 import styles from "./CreateDao.module.css";
@@ -13,6 +14,7 @@ import { Checkbox } from "@heathmont/moon-core-tw";
 
 export default function CreateDao() {
   const [DaoImage, setDaoImage] = useState([]);
+  const router = useRouter();
   //Storage API for images and videos
   const NFT_STORAGE_TOKEN =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDJDMDBFOGEzZEEwNzA5ZkI5MUQ1MDVmNDVGNUUwY0Q4YUYyRTMwN0MiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NDQ3MTgxOTY2NSwibmFtZSI6IlplbmNvbiJ9.6znEiSkiLKZX-a9q-CKvr4x7HS675EDdaXP622VmYs8";
@@ -72,8 +74,8 @@ export default function CreateDao() {
   }
   //Function after clicking Create Dao Button
   async function createDao() {
-    var CreateEVENTBTN = document.getElementById("CreateEVENTBTN");
-    CreateEVENTBTN.disabled = true;
+    var CreateDAOBTN = document.getElementById("CreateDAOBTN");
+    CreateDAOBTN.disabled = true;
     let allFiles = [];
     for (let index = 0; index < DaoImage.length; index++) {
       //Gathering all files link
@@ -132,17 +134,16 @@ export default function CreateDao() {
 
       // Creating Dao in Smart contract
       await window.contract.create_dao(window.accountId, JSON.stringify(createdObject))
-        .send({
-          from:window.accountId,
-          gasPrice: 500000000000,
-          gas: 5_000_000,
-        });
+      .send({
+        feeLimit:1_000_000_000,
+        shouldPollResponse:true
+      });
 
     } catch (error) {
       console.error(error);
-      window.location.href = "/login?[/]"; //If found any error then it will let the user to login page
+      // window.location.href = "/login?[/]"; //If found any error then it will let the user to login page
     }
-    window.location.href = "/daos"; //After the success it will redirect the user to /dao page
+    router.push("/daos"); //After the success it will redirect the user to /dao page
   }
 
   function FilehandleChange(dao) {
@@ -167,10 +168,7 @@ export default function CreateDao() {
     return (
       <>
         <div className="flex gap-4 justify-end">
-          <NavLink href="/donations">
-            <Button variant="secondary">Cancel</Button>
-          </NavLink>
-          <Button id="CreateEVENTBTN" onClick={createDao}>
+          <Button id="CreateDAOBTN" onClick={createDao}>
             <ControlsPlus className="text-moon-24" />
             Create Dao
           </Button>

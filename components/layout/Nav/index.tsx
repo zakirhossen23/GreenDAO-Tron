@@ -9,31 +9,49 @@ let running = false;
 export function Nav(): JSX.Element {
   const [acc, setAcc] = useState('');
   const [Balance, setBalance] = useState("");
+  const [count, setCount] = useState(0);
+
 
   const [isSigned, setSigned] = useState(false);
   async function fetchInfo() {
-    if (window.tronLink== undefined) {
+    if (window.tronLink == undefined) {
       window.document.getElementById("withoutSign").style.display = "none";
       window.document.getElementById("withSign").style.display = "none";
       window.document.getElementById("installTronLink").style.display = "";
+      running = false;
       return;
     }
     if (window.localStorage.getItem("login-type") === "TronLink") {
-  
-      let Balance = await window.tronWeb.trx.getBalance(window.accountId);
+      if (window.accountId !== undefined && window.accountId !== "") {
+        try {
+        
+          let Balance = await window.tronWeb.trx.getBalance(window.accountId);
 
-      let subbing = 10;
+          let subbing = 10;
 
-      if (window.innerWidth > 500) {
-        subbing = 20;
+          if (window.innerWidth > 500) {
+            subbing = 20;
+          }
+          setAcc(window.accountId.toString().substring(0, subbing) + "...");
+          setBalance(Balance / 1000000 + " TRX");
+          if (!isSigned)
+            setSigned(true);
+
+          window.document.getElementById("withoutSign").style.display = "none";
+          window.document.getElementById("withSign").style.display = "";
+          running = false; 
+           return;
+        } catch (error) {
+          console.error(error);
+          running = false;
+          return;
+        }
+
+      } else {
+        running = false;
+        return;
       }
-      setAcc(window.accountId.toString().substring(0, subbing) + "...");
-      setBalance(Balance / 1000000 + " TRX");
-      if (!isSigned)
-        setSigned(true);
 
-      window.document.getElementById("withoutSign").style.display = "none";
-      window.document.getElementById("withSign").style.display = "";
     } else {
       setSigned(false);
       window.document.getElementById("withoutSign").style.display = "";
@@ -41,20 +59,27 @@ export function Nav(): JSX.Element {
     }
   }
   useEffect(() => {
-    fetchInfo();
-  });
-
-
-  setInterval(()=>{ if (!isServer()) {
     if (!running) {
-      if ( !isSigned || acc === ""){
+      if (!isSigned || acc === "") {
+      
         running = true;
-        fetchInfo();   
+        fetchInfo();
       }
+    }
+    if ( acc !== ""){running = false;}           
+  },[count]);
 
-    }}
-    },1000)
- 
+
+  setInterval(() => {
+    if (!isServer()) {
+     
+   if (document.readyState === "complete" && !running ){
+     setCount(count + 1); 
+
+   }
+    }
+  }, 1000)
+
 
   async function onClickDisConnect() {
     window.localStorage.setItem("loggedin", "");
@@ -68,28 +93,23 @@ export function Nav(): JSX.Element {
         {isSigned ? (<>
 
           <li>
-            <NavLink href="/daos">
-              <a>
+              <a  href="/daos" >
                 <Button style={{ background: "none" }}> DAO</Button>
               </a>
-            </NavLink>
           </li>
           <li>
-            <NavLink href="/CreateDao">
-              <a>
+              <a  href="/CreateDao">
                 <Button style={{ background: "none" }}>Create DAO</Button>
               </a>
-            </NavLink>
           </li>
         </>) : (<></>)}
 
         <li className="Nav walletstatus flex flex-1 justify-end">
           <div className="py-2 px-4 flex row items-center" id="withoutSign">
-            <NavLink href="/login?[/]">
-              <a>
+       
+              <a href="/login?[/]">
                 <Button variant="tertiary">Log in</Button>
               </a>
-            </NavLink>
           </div>
           <div
             id="installTronLink"

@@ -109,7 +109,7 @@ export default function Login() {
               style={{ height: 80, width: 80, border: "1px solid #EBEBEB" }}
               className="p-4 rounded-xl"
             >
-              <img src="https://docs.coinex.org/images/favicon.ico?t=20200703" />
+              <img src="https://www.tronlink.org/favicon.ico" />
             </div>
             <div className="flex flex-1 flex-col">
               <span className="font-bold">TronLink Nile wallet</span>

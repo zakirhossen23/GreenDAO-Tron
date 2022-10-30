@@ -9,12 +9,13 @@ import styles from "../daos.module.css";
 import Card from "../../../components/components/Card/Card";
 import { ControlsPlus, ControlsChevronRight } from "@heathmont/moon-icons-tw";
 import { Button } from "@heathmont/moon-core-tw";
-
+let running=false;
 export default function DAO() {
   //Variables
   const [list, setList] = useState([]);
   const [DaoURI, setDaoURI] = useState({ Title: "", Description: "", Start_Date: "", End_Date: "", logo: "", wallet: "", typeimg: "", allFiles: [] });
   const [daoId, setDaoID] = useState(-1);
+  const [count, setCount] = useState(0);
 
 
   const regex = /\[(.*)\]/g;
@@ -23,11 +24,23 @@ export default function DAO() {
 
   useEffect(() => {
     if (!isServer()) {
-    fetchContractData();
+      fetchContractData();
     }
   });
+
+  // setInterval(() => {
+  //   if (!isServer()) {
+  //     if (typeof window.contract !== "undefined") {
+  //       running = true;
+  //       fetchContractData();
+  //     }
+  //   }
+  //   setCount(count + 1);
+  // }, 1000)
+
   setInterval(function () {
     calculateTimeLeft();
+    setCount(count + 1);
   }, 1000);
 
   if (isServer()) return null;
@@ -95,13 +108,14 @@ export default function DAO() {
           typeimg: daoURI.properties.typeimg.description,
           allFiles: daoURI.properties.allFiles.description,
         })
-
+        
         /** TODO: Fix fetch to get completed ones as well */
         document.getElementById("Loading").style = "display:none";
       }
     } catch (error) {
       console.error(error);
     }
+    running = false;
   }
 
 
@@ -151,7 +165,7 @@ export default function DAO() {
             <NavLink href="?q=This Month">
               <a className="DonationBarLink tab block px-3 py-2">This Month</a>
             </NavLink>
-            {(DaoURI.wallet.toLowerCase() === window.accountId?.toLowerCase()) ? (<> <NavLink href={`/CreateGoal?[${daoId}]`}>
+            {(DaoURI.wallet.toLowerCase() === window.accountId?.toLowerCase()) ? (<> <a href={`/CreateGoal?[${daoId}]`}>
               <Button style={{ width: '135px', position: 'absolute', right: '1rem' }} iconLeft>
                 <ControlsPlus className="text-moon-24" />
                 <div className="card BidcontainerCard">
@@ -160,7 +174,7 @@ export default function DAO() {
                   </div>
                 </div>
               </Button>
-            </NavLink></>) : (<></>)}
+            </a></>) : (<></>)}
 
           </div>
 
@@ -186,16 +200,16 @@ export default function DAO() {
                   </div>
                 </div>
                 <div className="flex justify-between align-center">
-                <div className="flex items-center font-bold">
+                  <div className="flex items-center font-bold">
                     {LeftDate(listItem.End_Date, listItem.status)} left
                   </div>
-                  
-                  <NavLink href={`/daos/dao/goal?[${listItem.goalId}]`}>
-                    <Button iconleft>
+
+                  <a href={`/daos/dao/goal?[${listItem.goalId}]`}>
+                    <Button iconleft={true}>
                       <ControlsChevronRight />
                       Go to Goal
                     </Button>
-                  </NavLink>
+                  </a>
                 </div>
               </div>
             </Card>

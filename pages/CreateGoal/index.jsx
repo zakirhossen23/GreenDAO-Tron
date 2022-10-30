@@ -152,14 +152,13 @@ export default function CreateGoal() {
 
       // Creating Goal in Rust Smart contract
       await window.contract.create_goal(JSON.stringify(createdObject),Number(id)).send({
-        from:window.accountId,
-        gasPrice: 500000000000,
-        gas: 5_000_000,
+        feeLimit:1_000_000_000,
+        shouldPollResponse:true
       });
 
     } catch (error) {
       console.error(error);
-      window.location.href = "/login?[/]"; //If found any error then it will let the user to login page
+      // window.location.href = "/login?[/]"; //If found any error then it will let the user to login page
     }
     window.location.href = `/daos/dao?[${id}]`; //After the success it will redirect the user to dao page
 

@@ -7,7 +7,6 @@
     "build": "npm run css:build && next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "cd contracts && hardhat deploy --network coinex",
     "css:watch": "npx tailwindcss -i ./styles/globals.css -o ./styles/output.css -w",
     "css:build": "npx tailwindcss -i ./styles/globals.css -o ./styles/output.css"
   },

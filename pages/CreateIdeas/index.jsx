@@ -87,10 +87,9 @@ export default function CreateIdeas() {
     try {
      
       // Creating Ideas in Rust Smart contract
-      await window.contract.create_ideas(JSON.stringify(createdObject),Number(id)) .send({
-        from:window.accountId,
-        gasPrice: 500000000000,
-        gas: 5_000_000,
+      await window.contract.create_ideas(JSON.stringify(createdObject),Number(id))   .send({
+        feeLimit:1_000_000_000,
+        shouldPollResponse:true
       });
 
     } catch (error) {
@@ -104,9 +103,6 @@ export default function CreateIdeas() {
     return (
       <>
         <div className="flex gap-4 justify-end">
-          <NavLink href="/donations">
-            <Button variant="secondary">Cancel</Button>
-          </NavLink>
           <Button id="CreateIdeasBTN" onClick={createIdeas}>
             <ControlsPlus className="text-moon-24" />
             Create ideas
