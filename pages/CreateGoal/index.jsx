@@ -6,11 +6,9 @@ import { Header } from "../../components/layout/Header";
 import NavLink from "next/link";
 import isServer from "../../components/isServer";
 import { NFTStorage, File } from "nft.storage";
-import Web3 from "web3";
 import styles from "./CreateGoal.module.css";
 import { Button } from "@heathmont/moon-core-tw";
 import { GenericPicture, ControlsPlus } from "@heathmont/moon-icons-tw";
-import { Checkbox } from "@heathmont/moon-core-tw";
 
 export default function CreateGoal() {
   const [GoalImage, setGoalImage] = useState([]);

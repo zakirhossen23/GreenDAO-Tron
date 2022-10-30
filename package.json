@@ -11,8 +11,6 @@
     "css:build": "npx tailwindcss -i ./styles/globals.css -o ./styles/output.css"
   },
   "dependencies": {
-    "@erc725/erc725.js": "^0.14.4",
-    "@erc725/smart-contracts": "^3.1.2",
     "@heathmont/moon-components": "^9.7.1",
     "@heathmont/moon-core": "^9.7.1",
     "@heathmont/moon-core-tw": "^9.7.1",
@@ -21,18 +19,11 @@
     "@heathmont/moon-select": "^9.7.2",
     "@heathmont/moon-themes": "^9.7.1",
     "@heathmont/moon-themes-tw": "^9.7.1",
-    "@nomiclabs/hardhat-ethers": "^2.0.6",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@openzeppelin/contracts": "^4.6.0",
-    "@truffle/hdwallet-provider": "^2.0.12",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "clean-css": "^5.3.1",
     "crypto-browserify": "^3.12.0",
     "dotenv": "^16.0.1",
-    "ethers": "^5.6.8",
-    "hardhat": "^2.9.7",
-    "hardhat-deploy": "^0.11.10",
     "https-browserify": "^1.0.0",
     "isomorphic-fetch": "^3.0.0",
     "next": "12.1.6",
@@ -48,8 +39,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "styled-components": "^5.3.5",
-    "tronweb": "^4.4.0",
-    "web3": "^1.7.5"
+    "tronweb": "^4.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.9",
