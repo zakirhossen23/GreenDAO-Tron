@@ -190,7 +190,7 @@ export default function GrantIdeas() {
   async function VoteIdees() {
     await contract.create_goal_ideas_vote(Number(Goalid), Number(id), signerAddress).send({
       feeLimit:1_000_000_000,
-      shouldPollResponse:true
+      shouldPollResponse:false
     });
     window.location.reload();
   }

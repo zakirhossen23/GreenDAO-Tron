@@ -8,7 +8,7 @@ const fetchInfo = async () => {
   if (typeof window !== "undefined") {
     console.log("Initializing Contract");
     try {
-      if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+      if (window.tronWeb && window?.tronWeb?.defaultAddress?.base58) {
         if (await window.localStorage.getItem('login-type') !== "TronLink") {
           const fullNode = 'https://api.nileex.io';
           const solidityNode = 'https://api.nileex.io';
@@ -19,10 +19,10 @@ const fetchInfo = async () => {
           window.contract = await tronWeb.contract().at('TX4zPPLU1yViNdrLkZjafnnFXkH5v5r2wp');
           iscalled = false;
           isrunning = false;
-        } else if (await window.localStorage.getItem('loggedin') === "true"&& window.tronWeb.defaultAddress.base58) {
+        } else if (await window.localStorage.getItem('loggedin') === "true"&& window?.tronWeb?.defaultAddress?.base58) {
        
           window.contract = await window.tronWeb.contract().at('TX4zPPLU1yViNdrLkZjafnnFXkH5v5r2wp');
-          window.accountId = window.tronWeb.defaultAddress.base58;
+          window.accountId = window?.tronWeb?.defaultAddress?.base58;
           window.account = await window.tronWeb.trx.getAccount(accountId);
           iscalled = false;
           isrunning = false;

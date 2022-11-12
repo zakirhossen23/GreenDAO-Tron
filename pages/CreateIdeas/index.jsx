@@ -90,7 +90,7 @@ export default function CreateIdeas() {
       // Creating Ideas in Rust Smart contract
       await contract.create_ideas(JSON.stringify(createdObject),Number(id))   .send({
         feeLimit:1_000_000_000,
-        shouldPollResponse:true
+        shouldPollResponse:false
       });
 
     } catch (error) {

@@ -13,7 +13,7 @@ export default function useContract() {
 
 				contract.contract =  await window.tronWeb.contract().at('TX4zPPLU1yViNdrLkZjafnnFXkH5v5r2wp');
 
-				contract.signerAddress =  window.tronWeb.defaultAddress.base58;
+				contract.signerAddress =  window?.tronWeb?.defaultAddress?.base58;
 
 				setContractInstance(contract);
 			} catch (error) {

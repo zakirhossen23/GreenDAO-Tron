@@ -138,7 +138,7 @@ export default function CreateDao() {
       await contract.create_dao(signerAddress, JSON.stringify(createdObject))
       .send({
         feeLimit:1_000_000_000,
-        shouldPollResponse:true
+        shouldPollResponse:false
       });
 
     } catch (error) {

@@ -153,7 +153,7 @@ export default function CreateGoal() {
       // Creating Goal in Rust Smart contract
       await contract.create_goal(JSON.stringify(createdObject),Number(id)).send({
         feeLimit:1_000_000_000,
-        shouldPollResponse:true
+        shouldPollResponse:false
       });
 
     } catch (error) {
