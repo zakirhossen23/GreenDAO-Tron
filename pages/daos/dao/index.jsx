@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import NavLink from "next/link";
-
+import useContract from '../../../services/useContract';
 import { Header } from "../../../components/layout/Header";
 import isServer from "../../../components/isServer";
 import styles from "../daos.module.css";
@@ -16,31 +16,22 @@ export default function DAO() {
   const [DaoURI, setDaoURI] = useState({ Title: "", Description: "", Start_Date: "", End_Date: "", logo: "", wallet: "", typeimg: "", allFiles: [] });
   const [daoId, setDaoID] = useState(-1);
   const [count, setCount] = useState(0);
+  const { contract, signerAddress } = useContract()
 
 
   const regex = /\[(.*)\]/g;
   let m;
   let id = ""; //id from url
 
-  useEffect(() => {
-    if (!isServer()) {
-      fetchContractData();
-    }
-  });
 
-  // setInterval(() => {
-  //   if (!isServer()) {
-  //     if (typeof window.contract !== "undefined") {
-  //       running = true;
-  //       fetchContractData();
-  //     }
-  //   }
-  //   setCount(count + 1);
-  // }, 1000)
+  useEffect(() => {
+    fetchContractData()
+  }, [contract])
+
+
 
   setInterval(function () {
     calculateTimeLeft();
-    setCount(count + 1);
   }, 1000);
 
   if (isServer()) return null;
@@ -72,16 +63,16 @@ export default function DAO() {
   async function fetchContractData() {
     //Fetching data from Smart contract
     try {
-      if (window.contract && id) {
+      if (contract && id) {
         setDaoID(Number(id));
 
-        const daoURI = JSON.parse(await window.contract.dao_uri(Number(id)).call()); //Getting dao URI
+        const daoURI = JSON.parse(await contract.dao_uri(Number(id)).call()); //Getting dao URI
 
-        const totalGoals = await window.contract.get_all_goals_by_dao_id(Number(id)).call(); //Getting all goals by dao id
+        const totalGoals = await contract.get_all_goals_by_dao_id(Number(id)).call(); //Getting all goals by dao id
         const arr = [];
         for (let i = 0; i < Object.keys(totalGoals).length; i++) {
           //total dao number Iteration
-          const goalid = await window.contract.get_goal_id_by_goal_uri(totalGoals[i]).call()
+          const goalid = await contract.get_goal_id_by_goal_uri(totalGoals[i]).call()
           const object = JSON.parse(totalGoals[i]);
           if (object) {
 
@@ -165,7 +156,7 @@ export default function DAO() {
             <NavLink href="?q=This Month">
               <a className="DonationBarLink tab block px-3 py-2">This Month</a>
             </NavLink>
-            {(DaoURI.wallet.toLowerCase() === window.accountId?.toLowerCase()) ? (<> <a href={`/CreateGoal?[${daoId}]`}>
+            {(DaoURI.wallet.toLowerCase() === window.tronWeb.defaultAddress.base58 ?.toLowerCase()) ? (<> <a href={`/CreateGoal?[${daoId}]`}>
               <Button style={{ width: '135px', position: 'absolute', right: '1rem' }} iconLeft>
                 <ControlsPlus className="text-moon-24" />
                 <div className="card BidcontainerCard">

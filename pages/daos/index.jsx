@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import NavLink from "next/link";
-
+import useContract from '../../services/useContract'
 import { Header } from "../../components/layout/Header";
 import isServer from "../../components/isServer";
 import styles from "./daos.module.css";
@@ -15,21 +15,13 @@ export default function DAOs() {
   //Variables
   const [list, setList] = useState([]);
   const [count, setCount] = useState(0);
+  const { contract, signerAddress } = useContract()
+
 
   useEffect(() => {
-    fetchContractData();
-  });
-  
+    fetchContractData()
+  }, [contract])
 
-  setInterval(() => {
-    if (!isServer()) {
-      if (typeof window.contract !== "undefined") {
-        running = true;
-        fetchContractData();
-      }
-    }
-    setCount(count + 1);
-  }, 1000);
 
 
   setInterval(function () {
@@ -53,8 +45,8 @@ export default function DAOs() {
   async function fetchContractData() {
     //Fetching data from Smart contract
     try {
-      if (window.contract) {
-        const totalDao =await window.contract.get_all_daos().call(); //Getting total dao (Number)
+      if (contract) {
+        const totalDao =await contract.get_all_daos().call(); //Getting total dao (Number)
         const arr = [];
         for (let i = 0; i < Object.keys(totalDao).length; i++) {
           //total dao number Iteration

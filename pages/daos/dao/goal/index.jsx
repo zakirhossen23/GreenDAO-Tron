@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import NavLink from "next/link";
+import useContract from '../../../../services/useContract';
 
 import { Header } from "../../../../components/layout/Header";
 import isServer from "../../../../components/isServer";
@@ -16,19 +17,20 @@ export default function Goal() {
   const [GoalURI, setGoalURI] = useState({   goalId:"",Title:"",Description: "",Budget: "",End_Date:"",StructureLeft: [],StructureRight: [],wallet:"",logo: "" });
   const [goalId, setGoalID] = useState(-1);
   const [count, setCount] = useState(0);
+  const { contract, signerAddress } = useContract();
 
   const regex = /\[(.*)\]/g;
   let m;
   let id = ""; //id from url
 
+
   useEffect(() => {
-    if (!isServer()) {
-      fetchContractData();
-    }
-  });
+    fetchContractData()
+  }, [contract])
+
+  
   setInterval(function () {
     calculateTimeLeft();
-    setCount(count + 1);
   }, 1000);
   if (isServer()) return null;
   const str = decodeURIComponent(window.location.search);
@@ -59,16 +61,16 @@ export default function Goal() {
   async function fetchContractData() {
     //Fetching data from Smart contract
     try {
-      if (window.contract && id ) {
+      if (contract && id ) {
         setGoalID(Number(id));
 
-        const goalURI = JSON.parse(await window.contract.goal_uri(Number(id)).call()); //Getting total goal (Number)
+        const goalURI = JSON.parse(await contract.goal_uri(Number(id)).call()); //Getting total goal (Number)
 
-        const totalIdeas =await window.contract.get_all_ideas_by_goal_id(Number(id)).call(); //Getting total goal (Number)
+        const totalIdeas =await contract.get_all_ideas_by_goal_id(Number(id)).call(); //Getting total goal (Number)
         const arr = [];
         for (let i = 0; i < Object.keys(totalIdeas).length; i++) {
           //total goal number Iteration
-          const ideasId = await window.contract.get_goal_id_by_goal_uri(totalIdeas[i]).call();
+          const ideasId = await contract.get_goal_id_by_goal_uri(totalIdeas[i]).call();
           const object =JSON.parse(totalIdeas[ideasId]);
           if (object) {
            
@@ -151,7 +153,7 @@ export default function Goal() {
             <NavLink href="?q=This Month">
               <a className="DonationBarLink tab block px-3 py-2">This Month</a>
             </NavLink>
-            {(GoalURI.wallet.toLowerCase() !== window.accountId?.toLowerCase())?(<> 
+            {(GoalURI.wallet.toLowerCase() !== window.tronWeb.defaultAddress.base58 ?.toLowerCase())?(<> 
             <a href={`/CreateIdeas?[${goalId}]`}>
               <Button style={{ width: '135px', position: 'absolute', right: '1rem' }} iconLeft>
                 <ControlsPlus className="text-moon-24" />

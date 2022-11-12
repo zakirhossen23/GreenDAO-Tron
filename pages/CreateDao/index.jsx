@@ -5,6 +5,7 @@ import UseFormTextArea from "../../components/components/UseFormTextArea";
 import { Header } from "../../components/layout/Header";
 import NavLink from "next/link";
 import { useRouter } from "next/router";
+import useContract from '../../services/useContract'
 import isServer from "../../components/isServer";
 import { NFTStorage, File } from "nft.storage";
 import styles from "./CreateDao.module.css";
@@ -14,6 +15,7 @@ import { Checkbox } from "@heathmont/moon-core-tw";
 
 export default function CreateDao() {
   const [DaoImage, setDaoImage] = useState([]);
+  const { contract, signerAddress } = useContract()
   const router = useRouter();
   //Storage API for images and videos
   const NFT_STORAGE_TOKEN =
@@ -111,7 +113,7 @@ export default function CreateDao() {
         },
         wallet: {
           type: 'string',
-          description: window.accountId
+          description: signerAddress
         },
         typeimg: {
           type: 'string',
@@ -122,7 +124,7 @@ export default function CreateDao() {
     };
     console.log("======================>Creating Dao");
     try {
-      const valueAll = await window.contract.get_all_daos().call() //Getting dao URI from smart contract       
+      const valueAll = await contract.get_all_daos().call() //Getting dao URI from smart contract       
 
       // //Getting the dao id of new one
       let daoid = valueAll.length;
@@ -133,7 +135,7 @@ export default function CreateDao() {
       }
 
       // Creating Dao in Smart contract
-      await window.contract.create_dao(window.accountId, JSON.stringify(createdObject))
+      await contract.create_dao(signerAddress, JSON.stringify(createdObject))
       .send({
         feeLimit:1_000_000_000,
         shouldPollResponse:true

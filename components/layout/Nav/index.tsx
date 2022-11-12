@@ -22,17 +22,17 @@ export function Nav(): JSX.Element {
       return;
     }
     if (window.localStorage.getItem("login-type") === "TronLink") {
-      if (window.accountId !== undefined && window.accountId !== "") {
+      if (window.tronWeb.defaultAddress.base58 != null ) {
         try {
         
-          let Balance = await window.tronWeb.trx.getBalance(window.accountId);
+          let Balance = await window.tronWeb.trx.getBalance(window.tronWeb.defaultAddress.base58);
 
           let subbing = 10;
 
           if (window.innerWidth > 500) {
             subbing = 20;
           }
-          setAcc(window.accountId.toString().substring(0, subbing) + "...");
+          setAcc(window.tronWeb.defaultAddress.base58.toString().substring(0, subbing) + "...");
           setBalance(Balance / 1000000 + " TRX");
           if (!isSigned)
             setSigned(true);

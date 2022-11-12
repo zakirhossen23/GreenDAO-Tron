@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import NavLink from "next/link";
 import SlideShow from '../../../../../components/components/Slideshow';
+import useContract from '../../../../../services/useContract';
 
 import isServer from "../../../../../components/isServer";
 import { Header } from "../../../../../components/layout/Header";
@@ -17,10 +18,11 @@ export default function GrantIdeas() {
   const [IdeasURI, setIdeasURI] = useState({ ideasId: "", Title: "", Description: "", wallet: "", logo: "", End_Date: "", voted: 0, isVoted: true, allfiles: [] });
 
   const [AccountAddress, setAccountAddress] = useState("");
+  const { contract, signerAddress } = useContract();
+
   const [count, setCount] = useState(0);
   const formatter = new Intl.NumberFormat("en-US", {
     //Converting number into comma version
-
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -83,18 +85,12 @@ export default function GrantIdeas() {
       );
     }
   }
+
+  
   useEffect(() => {
-    if (!isServer()) {   
-      if (!running && IdeasURI.ideasId === "") {
-        running = false;
-        fetchContractData();
-      }
-    }
-  });
-  setInterval(function () {
-    if (IdeasURI.ideasId === "")
-    setCount(count + 1);
-  }, 1000);
+    fetchContractData()
+  }, [contract])
+  
   useEffect(() => {
     DesignSlide();
   });
@@ -114,22 +110,22 @@ export default function GrantIdeas() {
 
   async function fetchContractData() {
     try {
-      if (window.contract && id) {
-        setAccountAddress(window.accountId);
+      if (contract && id) {
+        setAccountAddress(signerAddress);
         setIdeasId(id); //setting Ideas id
         id = Number(id);
 
-        const ideaURI = await window.contract.ideas_uri(Number(id)).call(); //Getting ideas uri
+        const ideaURI = await contract.ideas_uri(Number(id)).call(); //Getting ideas uri
         const object = JSON.parse(ideaURI); //Getting ideas uri
-        Goalid = await window.contract.get_goal_id_from_ideas_uri(ideaURI).call();
+        Goalid = await contract.get_goal_id_from_ideas_uri(ideaURI).call();
 
 
-        const goalURI = JSON.parse(await window.contract.goal_uri(Number(Goalid)).call()); //Getting goal URI
+        const goalURI = JSON.parse(await contract.goal_uri(Number(Goalid)).call()); //Getting goal URI
         let isvoted = false;
-        const Allvotes = await window.contract.get_ideas_votes_from_goal(Number(Goalid), Number(id)).call(); //Getting all votes
+        const Allvotes = await contract.get_ideas_votes_from_goal(Number(Goalid), Number(id)).call(); //Getting all votes
         for (let i = 0; i < Allvotes.length; i++) {
           const element = Allvotes[i];
-          if (element === window.accountId) isvoted = true;
+          if (element === signerAddress) isvoted = true;
         }
 
         setIdeasURI({
@@ -192,7 +188,7 @@ export default function GrantIdeas() {
 
 
   async function VoteIdees() {
-    await window.contract.create_goal_ideas_vote(Number(Goalid), Number(id), window.accountId).send({
+    await contract.create_goal_ideas_vote(Number(Goalid), Number(id), signerAddress).send({
       feeLimit:1_000_000_000,
       shouldPollResponse:true
     });

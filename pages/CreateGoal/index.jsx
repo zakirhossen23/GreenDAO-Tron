@@ -5,6 +5,7 @@ import UseFormTextArea from "../../components/components/UseFormTextArea";
 import { Header } from "../../components/layout/Header";
 import NavLink from "next/link";
 import isServer from "../../components/isServer";
+import useContract from '../../services/useContract'
 import { NFTStorage, File } from "nft.storage";
 import styles from "./CreateGoal.module.css";
 import { Button } from "@heathmont/moon-core-tw";
@@ -13,6 +14,7 @@ import { GenericPicture, ControlsPlus } from "@heathmont/moon-icons-tw";
 export default function CreateGoal() {
   const [GoalImage, setGoalImage] = useState([]);
   const [GoalRules, setGoalRules] = useState([]);
+  const { contract, signerAddress } = useContract()
   if (isServer()) return null;
 
   //Storage API for images and videos
@@ -136,7 +138,7 @@ export default function CreateGoal() {
         },
         wallet: {
           type: "string",
-          description: window.accountId,
+          description: signerAddress,
         },
         logo: {
           type: "string",
@@ -149,7 +151,7 @@ export default function CreateGoal() {
     try {
 
       // Creating Goal in Rust Smart contract
-      await window.contract.create_goal(JSON.stringify(createdObject),Number(id)).send({
+      await contract.create_goal(JSON.stringify(createdObject),Number(id)).send({
         feeLimit:1_000_000_000,
         shouldPollResponse:true
       });

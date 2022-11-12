@@ -17,7 +17,7 @@ export default function Welcome() {
         "https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec",
         "_blank"
       );
-    } else  if (window.accountId == null || window.localStorage.getItem("ConnectedTronLink") !== "true") {
+    } else  if (window.tronWeb.defaultAddress.base58  == null || window.localStorage.getItem("ConnectedTronLink") !== "true") {
       router.push("/login?[/daos]");
     } else {
       router.push("/daos");

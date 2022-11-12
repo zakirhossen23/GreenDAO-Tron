@@ -4,11 +4,14 @@ import { Button } from "@heathmont/moon-core-tw";
 import Form from "react-bootstrap/Form";
 import { Header } from "../../components/layout/Header";
 import UseFormInput from "../../components/components/UseFormInput";
+import useContract from '../../services/useContract';
 export default function ResetDataFORM() {
 
+  const { contract, signerAddress } = useContract();
+
   async function resetData() {
-    await window.contract.reset_all().send({
-      from:window.accountId,
+    await contract.reset_all().send({
+      from:signerAddress ,
       gasPrice: 500000000000,
       gas: 5_000_000,
     });
