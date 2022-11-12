@@ -20,6 +20,10 @@ export function Nav(): JSX.Element {
       window.document.getElementById("installTronLink").style.display = "";
       running = false;
       return;
+    }else{
+      window.document.getElementById("withoutSign").style.display = "";
+      window.document.getElementById("withSign").style.display = "";
+      window.document.getElementById("installTronLink").style.display = "none";
     }
     if (window.localStorage.getItem("login-type") === "TronLink") {
       if (window?.tronWeb?.defaultAddress?.base58 != null ) {
