@@ -156,7 +156,7 @@ export default function DAO() {
             <NavLink href="?q=This Month">
               <a className="DonationBarLink tab block px-3 py-2">This Month</a>
             </NavLink>
-            {(DaoURI === window?.tronWeb?.defaultAddress?.base58) ? (<> <a href={`/CreateGoal?[${daoId}]`}>
+            {(DaoURI.wallet === window?.tronWeb?.defaultAddress?.base58) ? (<> <a href={`/CreateGoal?[${daoId}]`}>
               <Button style={{ width: '135px', position: 'absolute', right: '1rem' }} iconLeft>
                 <ControlsPlus className="text-moon-24" />
                 <div className="card BidcontainerCard">
