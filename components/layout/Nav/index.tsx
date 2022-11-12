@@ -14,7 +14,7 @@ export function Nav(): JSX.Element {
 
   const [isSigned, setSigned] = useState(false);
   async function fetchInfo() {
-    if (window.tronLink == undefined) {
+    if (window.tronWeb == undefined) {
       window.document.getElementById("withoutSign").style.display = "none";
       window.document.getElementById("withSign").style.display = "none";
       window.document.getElementById("installTronLink").style.display = "";
