@@ -51,29 +51,6 @@ export default function CreateGoal() {
     placeholder: "Budget",
     id: "goal",
   });
- const [Qoutation1, Qoutation1Input] = UseFormInput({
-    defaultValue: "",
-    type: "text",
-    placeholder: "Give link to quotation ",
-    id: "qoutation1",
-  }); 
-  const [Qoutation2, Qoutation2Input] = UseFormInput({
-    defaultValue: "",
-    type: "text",
-    placeholder: "Give total prize of the quatation",
-    id: "qoutation2",
-  });
-
-  let StructureLeft = {
-    0: "Representatives Berlin",
-    1: "Community",
-    2: "Children"
-  }
-  let StructureRight = {
-    0: "20%",
-    1: "70%",
-    2: "10%"
-  }
   let id = -1;
 
 
@@ -168,7 +145,7 @@ export default function CreateGoal() {
     return (
       <>
         <div className="flex gap-4 justify-end">
-          <NavLink href="/donations">
+          <NavLink href="/daos">
             <Button variant="secondary">Cancel</Button>
           </NavLink>
           <Button id="CreateGoalBTN" onClick={createGoal}>
@@ -322,55 +299,7 @@ export default function CreateGoal() {
               </div>
             </div>
           </div>
-          <div>
-            <h6>Structure</h6>
-            <div className="flex gap-8">
-              <div style={{ boxShadow: '#907979 0 0 10px 0px' }} className="bg-white rounded-lg flex flex-col p-2  pb-2 w-48 pb-0">
-                <h6 onInput={e => { StructureLeft[0] = e.currentTarget.innerText }} contentEditable="true" className="border-2 hover:bg-[#d1d5db] hover:cursor-pointer bg-white flex hover:bg-gray-200 items-center p-2 rounded-lg w-full">
-                  Representives Berlin
-                </h6>
-                <h6 onInput={e => { StructureLeft[1] = e.currentTarget.innerText }} contentEditable="true" className="border-2 hover:bg-[#d1d5db] hover:cursor-pointer bg-white flex hover:bg-gray-200 items-center p-2 rounded-lg w-full">
-                  Community
-                </h6>
-                <h6 onInput={e => { StructureLeft[2] = e.currentTarget.innerText }} contentEditable="true" className="border-2 hover:bg-[#d1d5db] hover:cursor-pointer bg-white flex hover:bg-gray-200 items-center p-2 rounded-lg w-full">
-                  Childeren
-                </h6>
-              </div>
-              <div style={{ boxShadow: '#907979 0 0 10px 0px' }} className="bg-white rounded-lg flex flex-col p-2  pb-2 w-48 pb-0">
-
-                <h6 onInput={e => { StructureRight[0] = e.currentTarget.innerText }} contentEditable="true" className="border-2 hover:bg-[#d1d5db] hover:cursor-pointer bg-white flex hover:bg-gray-200 items-center p-2 rounded-lg w-full">
-                  20%
-                </h6>
-                <h6 onInput={e => { StructureRight[1] = e.currentTarget.innerText }} contentEditable="true" className="border-2 hover:bg-[#d1d5db] hover:cursor-pointer bg-white flex hover:bg-gray-200 items-center p-2 rounded-lg w-full">
-                  70%
-                </h6>
-                <h6 onInput={e => { StructureRight[2] = e.currentTarget.innerText }} contentEditable="true" className="border-2 hover:bg-[#d1d5db] hover:cursor-pointer bg-white flex hover:bg-gray-200 items-center p-2 rounded-lg w-full">
-                  10%
-                </h6>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <h6>Rules</h6>
-
-
-            <div className="content-start gap-8 flex flex-row flex-wrap h-full justify-start ">
-              <div className="flex gap-8 w-full">
-                <div className="flex-1">                
-                  {Qoutation1Input}
-                </div>
-                <div className="flex-1">                
-                  {Qoutation2Input}
-                </div>
-              </div>
-
-              <Button>
-                <ControlsPlus className="text-moon-24" />
-                Add smart contract
-              </Button>
-            </div>
-
-          </div>
+    
           <CreateGoalBTN />
         </div>
         <div className={styles.divider}></div>

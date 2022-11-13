@@ -195,7 +195,7 @@ export default function Goal() {
                   <a href={`/daos/dao/goal/ideas?[${listItem.ideasId}]`}>
                     <Button iconleft>
                       <ControlsChevronRight />
-                      Go to Ideas
+                      See more
                     </Button>
                   </a>
                 </div>

@@ -9,7 +9,7 @@ import styles from "../daos.module.css";
 import Card from "../../../components/components/Card/Card";
 import { ControlsPlus, ControlsChevronRight } from "@heathmont/moon-icons-tw";
 import { Button } from "@heathmont/moon-core-tw";
-let running=false;
+let running = false;
 export default function DAO() {
   //Variables
   const [list, setList] = useState([]);
@@ -99,7 +99,7 @@ export default function DAO() {
           typeimg: daoURI.properties.typeimg.description,
           allFiles: daoURI.properties.allFiles.description,
         })
-        
+
         /** TODO: Fix fetch to get completed ones as well */
         document.getElementById("Loading").style = "display:none";
       }
@@ -176,7 +176,9 @@ export default function DAO() {
         <div id="Loading" className="LoadingArea">
           <h1>Loading...</h1>
         </div>
-
+        <div class="flex flex-col gap-8">
+          <img src={DaoURI.logo.url}/>
+        </div>
         <div className="flex flex-col gap-8">
           {list.map((listItem, index) => (
             <Card height={300} width={640} key={index} className="p-10">
