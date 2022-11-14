@@ -100,8 +100,6 @@ export default function Goal() {
           Description: goalURI.properties.Description.description,
           Budget: goalURI.properties.Budget.description,          
           End_Date: goalURI.properties.End_Date?.description,
-          StructureLeft: goalURI.properties.StructureLeft.description,
-          StructureRight: goalURI.properties.StructureRight.description,
           wallet: goalURI.properties.wallet.description,
           logo: goalURI.properties.logo.description.url
         })
@@ -180,6 +178,9 @@ export default function Goal() {
 
         <div id="Loading" className="LoadingArea">
           <h1>Loading...</h1>
+        </div>
+        <div className="flex flex-col gap-8">
+          <img src={GoalURI.logo} />
         </div>
 
         <div className="flex flex-col gap-8">
