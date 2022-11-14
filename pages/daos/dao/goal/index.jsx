@@ -23,10 +23,18 @@ export default function Goal() {
   let m;
   let id = ""; //id from url
 
+  const sleep = (milliseconds) => {return new Promise((resolve) => setTimeout(resolve, milliseconds));};
 
   useEffect(() => {
-    fetchContractData()
+    const fetch = async()=>{
+      await sleep(200);
+      if (contract !== null){
+        fetchContractData()
+      }
+    }
+    fetch();
   }, [contract])
+
 
   
   setInterval(function () {

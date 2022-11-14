@@ -15,17 +15,22 @@ export default function DAO() {
   const [list, setList] = useState([]);
   const [DaoURI, setDaoURI] = useState({ Title: "", Description: "", Start_Date: "", End_Date: "", logo: "", wallet: "", typeimg: "", allFiles: [] });
   const [daoId, setDaoID] = useState(-1);
-  const [count, setCount] = useState(0);
   const { contract, signerAddress } = useContract()
 
-
+  const sleep = (milliseconds) => {return new Promise((resolve) => setTimeout(resolve, milliseconds));};
   const regex = /\[(.*)\]/g;
   let m;
   let id = ""; //id from url
 
 
   useEffect(() => {
-    fetchContractData()
+    const fetchData = async () => {
+      await sleep(200);
+      if (contract !== null){
+        fetchContractData()
+      }
+    }
+    fetchData();
   }, [contract])
 
 
@@ -177,7 +182,7 @@ export default function DAO() {
           <h1>Loading...</h1>
         </div>
         <div className="flex flex-col gap-8">
-          <img src={DaoURI.logo.url}/>
+          <img src={DaoURI.logo.url} />
         </div>
         <div className="flex flex-col gap-8">
           {list.map((listItem, index) => (

@@ -14,12 +14,19 @@ let running=false;
 export default function DAOs() {
   //Variables
   const [list, setList] = useState([]);
-  const [count, setCount] = useState(0);
   const { contract, signerAddress } = useContract()
 
+  const sleep = (milliseconds) => {return new Promise((resolve) => setTimeout(resolve, milliseconds));};
+ 
 
   useEffect(() => {
-    fetchContractData()
+    const fetch = async()=>{
+      await sleep(200);
+      if (contract !== null){
+        fetchContractData()
+      }
+    }
+    fetch();
   }, [contract])
 
 
