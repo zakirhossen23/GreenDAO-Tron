@@ -95,7 +95,7 @@ export default function DAOs() {
       m.toString() +
       " minutes " +
       s.toString() +
-      " seconds"
+      " seconds" + "Left"
     );
   }
 

@@ -127,7 +127,7 @@ export default function Goal() {
       m.toString() +
       " minutes " +
       s.toString() +
-      " seconds"
+      " seconds" + " Left"
     );
   }
 
@@ -188,9 +188,10 @@ export default function Goal() {
                   </div>
                 </div>
                 <div className="flex justify-between align-center ">                               
-                <div className="flex items-center font-bold">
-                    {LeftDate(GoalURI.End_Date, listItem.status)} left
+                <div name="DateCount" date={GoalURI.End_Date} status={listItem.status} className="flex items-center font-bold">
+                    {LeftDate(GoalURI.End_Date, listItem.status)}
                   </div>
+
                   
                   <a href={`/daos/dao/goal/ideas?[${listItem.ideasId}]`}>
                     <Button iconleft>

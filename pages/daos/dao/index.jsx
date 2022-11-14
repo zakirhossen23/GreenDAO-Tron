@@ -130,7 +130,7 @@ export default function DAO() {
       m.toString() +
       " minutes " +
       s.toString() +
-      " seconds"
+      " seconds" + " Left"
     );
   }
 
@@ -176,7 +176,7 @@ export default function DAO() {
         <div id="Loading" className="LoadingArea">
           <h1>Loading...</h1>
         </div>
-        <div class="flex flex-col gap-8">
+        <div className="flex flex-col gap-8">
           <img src={DaoURI.logo.url}/>
         </div>
         <div className="flex flex-col gap-8">
@@ -193,8 +193,8 @@ export default function DAO() {
                   </div>
                 </div>
                 <div className="flex justify-between align-center">
-                  <div className="flex items-center font-bold">
-                    {LeftDate(listItem.End_Date, listItem.status)} left
+                  <div name="DateCount" date={listItem.End_Date} status={listItem.status} className="flex items-center font-bold">
+                    {LeftDate(listItem.End_Date, listItem.status)}
                   </div>
 
                   <a href={`/daos/dao/goal?[${listItem.goalId}]`}>
