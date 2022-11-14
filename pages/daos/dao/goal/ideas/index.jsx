@@ -89,14 +89,14 @@ export default function GrantIdeas() {
 
   useEffect(() => {
     const fetch = async()=>{
-      await sleep(200);
+      await sleep(150);
       if (contract !== null){
         fetchContractData()
       }
     }
     fetch();
   }, [contract])
-  
+
   useEffect(() => {
     DesignSlide();
   });
