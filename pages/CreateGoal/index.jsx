@@ -101,18 +101,6 @@ export default function CreateGoal() {
           type: 'string',
           description: EndDate,
         },
-        StructureLeft: {
-          type: "string",
-          description: Object.values(StructureLeft),
-        },
-        StructureRight: {
-          type: "string",
-          description: Object.values(StructureRight),
-        },
-        Qoutation:{
-          rule1:Qoutation1,
-          rule2:Qoutation2
-        },
         wallet: {
           type: "string",
           description: signerAddress,
