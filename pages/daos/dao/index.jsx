@@ -88,8 +88,6 @@ export default function DAO() {
               Description: object.properties.Description.description,
               Budget: object.properties.Budget.description,
               End_Date: object.properties.End_Date.description,
-              StructureLeft: object.properties.StructureLeft.description,
-              StructureRight: object.properties.StructureRight.description,
               logo: object.properties.logo.description.url
             });
           }
